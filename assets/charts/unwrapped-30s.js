@@ -67,8 +67,6 @@ addSection(321.5,330.0,2.5,{strongEvery:3});
 addSection(330.5,337.0,3.5,{strongEvery:2});
 UNWRAPPED_CHART.sort((a,b)=>a.time-b.time);
 
-// Additional selectable charts. All timings are scaled to the game's common 338-second timeline,
-// while the original audio remains untouched.
 function buildSingleChart(bpm,beat0,sections){
   const beat=60/bpm, out=[], lanes=LANES; let cursor=0;
   const add=t=>out.push({time:Number(t.toFixed(3)),key:lanes[cursor++%4],strength:cursor%4===1?'strong':'normal'});
@@ -100,9 +98,10 @@ function applySong(id){
   const factor=GAME_TIMELINE/cfg.duration;
   const desc=Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype,'currentTime');
   if(audio&&desc&&desc.get&&!audio.__fredScaled){
-    Object.defineProperty(audio,'currentTime',{configurable:true,get(){return desc.get.call(this)*factor},set(v){desc.set.call(this,v/factor)}});
+    Object.defineProperty(audio,'currentTime',{configurable:true,get(){return desc.get.call(this)*this.__fredFactor},set(v){desc.set.call(this,v/this.__fredFactor)}});
     audio.__fredScaled=true;
   }
+  if(audio)audio.__fredFactor=factor;
   UNWRAPPED_CHART.length=0;
   for(const n of cfg.raw)UNWRAPPED_CHART.push({time:Number((n.time*factor).toFixed(3)),key:n.key,strength:n.strength});
   UNWRAPPED_CHART.sort((a,b)=>a.time-b.time);
@@ -112,7 +111,6 @@ function applySong(id){
 }
 applySong(selectedSong);
 
-// Song selector is injected before the game's own inline script starts.
 (function createSongSelector(){
   const old=document.getElementById('songSelect');if(old)old.remove();
   const wrap=document.createElement('div');wrap.id='songSelect';wrap.style.cssText='position:absolute;z-index:100;inset:0;display:flex;align-items:center;justify-content:center;background:#050314d9;backdrop-filter:blur(7px);color:#fff';
