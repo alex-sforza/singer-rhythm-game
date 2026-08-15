@@ -55,14 +55,14 @@ function addSection(start,end,stepBeats,opts={}) {
 
 // 0:59–1:12 — preparation: gently increasing density
 addSection(59.861,72.7,2,{strongEvery:4,pairEvery:8});
-// 1:13–1:42 — chorus: simplified, with more breathing room between notes
-addSection(73.05,101.6,1.5,{strongEvery:4,pairEvery:6,pairShift:2});
+// 1:13–1:42 — chorus: simplified, with fewer extra pairs and more breathing room
+addSection(73.05,101.6,1.5,{strongEvery:4,pairEvery:10,pairShift:2});
 // 1:42–2:15 — instrumental + second verse: ordinary speed
 addSection(102.0,135.4,2,{strongEvery:4,pairEvery:10});
 // 2:16–2:29 — preparation
 addSection(136.0,149.4,1.5,{strongEvery:4,pairEvery:7});
 // 2:30–3:05 — chorus: simplified, matching the first chorus
-addSection(150.0,184.7,1.5,{strongEvery:4,pairEvery:6,pairShift:2});
+addSection(150.0,184.7,1.5,{strongEvery:4,pairEvery:10,pairShift:2});
 // 3:06–3:20 — bridge: slow down, breathing room
 addSection(186.0,200.0,3,{strongEvery:3});
 // 3:21–4:04 — instrumental: gradual increase, only a few hardest moments at the end
@@ -74,7 +74,7 @@ addSection(245.0,258.0,3,{strongEvery:3});
 // 4:19–4:33 — build back toward chorus level
 addSection(259.0,273.2,1.5,{strongEvery:4,pairEvery:8});
 // 4:34–5:10 — final chorus: simplified regular chorus difficulty
-addSection(274.0,310.0,1.5,{strongEvery:4,pairEvery:6,pairShift:2});
+addSection(274.0,310.0,1.5,{strongEvery:4,pairEvery:10,pairShift:2});
 // 5:11–5:38 — ending: progressively fewer notes, finishing with singles
 addSection(311.0,321.0,2,{strongEvery:4,pairEvery:10});
 addSection(321.5,330.0,2.5,{strongEvery:3});
