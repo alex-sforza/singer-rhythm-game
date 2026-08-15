@@ -1,7 +1,6 @@
 // Sugar Funeral — Unwrapped (Cover)
 // Full 5:38 gameplay chart, arranged by musical sections.
 // BPM reference: ~133.93. The chart deliberately uses selected beats rather than every beat.
-// Difficulty rises and falls according to the song structure supplied for the level.
 const UNWRAPPED_CHART = [
   // 0:00–0:30 — intro: very sparse
   {time:4.075,key:'ArrowLeft',strength:'normal'},
@@ -38,66 +37,46 @@ const UNWRAPPED_CHART = [
 const BEAT = 60 / 133.93;
 const LANES = ['ArrowLeft','ArrowUp','ArrowDown','ArrowRight'];
 let laneCursor = 0;
-function addNote(time, lane, strength='normal') {
+function addNote(time,lane,strength='normal') {
   if (time < 59.8 || time > 337.8) return;
   UNWRAPPED_CHART.push({time:Number(time.toFixed(3)),key:LANES[lane % 4],strength});
 }
 function addSection(start,end,stepBeats,opts={}) {
-  const step = BEAT * stepBeats;
-  let i = 0;
-  for (let t=start; t<=end+0.001; t+=step,i++) {
-    const lane = (laneCursor + i + (opts.laneShift||0)) % 4;
-    const strong = opts.strongEvery && i % opts.strongEvery === 0;
+  const step=BEAT*stepBeats; let i=0;
+  for(let t=start;t<=end+0.001;t+=step,i++){
+    const lane=(laneCursor+i+(opts.laneShift||0))%4;
+    const strong=opts.strongEvery&&i%opts.strongEvery===0;
     addNote(t,lane,strong?'strong':'normal');
-    if (opts.pairEvery && i % opts.pairEvery === 0 && t + BEAT/2 <= end) {
-      addNote(t + BEAT/2,(lane + (opts.pairShift||1)) % 4,'normal');
-    }
-    if (opts.tripleEvery && i % opts.tripleEvery === 0 && t + BEAT <= end) {
-      addNote(t + BEAT/2,(lane + 2) % 4,'normal');
-      addNote(t + BEAT,(lane + 1) % 4,'strong');
-    }
+    if(opts.pairEvery&&i%opts.pairEvery===0&&t+BEAT/2<=end) addNote(t+BEAT/2,(lane+(opts.pairShift||1))%4,'normal');
+    if(opts.tripleEvery&&i%opts.tripleEvery===0&&t+BEAT<=end){addNote(t+BEAT/2,(lane+2)%4,'normal');addNote(t+BEAT,(lane+1)%4,'strong');}
   }
-  laneCursor = (laneCursor + i + (opts.laneShift||0)) % 4;
+  laneCursor=(laneCursor+i+(opts.laneShift||0))%4;
 }
 
 // 0:59–1:12 — preparation: gently increasing density
 addSection(59.861,72.7,2,{strongEvery:4,pairEvery:8});
-
 // 1:13–1:42 — chorus: complex but readable combinations
 addSection(73.05,101.6,1,{strongEvery:4,pairEvery:4,pairShift:2});
-
 // 1:42–2:15 — instrumental + second verse: ordinary speed
 addSection(102.0,135.4,2,{strongEvery:4,pairEvery:10});
-
 // 2:16–2:29 — preparation
 addSection(136.0,149.4,1.5,{strongEvery:4,pairEvery:7});
-
 // 2:30–3:05 — chorus: complex combinations
 addSection(150.0,184.7,1,{strongEvery:4,pairEvery:4,pairShift:2});
-
 // 3:06–3:20 — bridge: slow down, breathing room
 addSection(186.0,200.0,3,{strongEvery:3});
-
 // 3:21–4:04 — instrumental: gradual increase, only a few hardest moments at the end
 addSection(201.0,220.0,2.5,{strongEvery:4});
-addSection(220.4,237.0,2,{strongEvery:4,pairEvery:10});
-addSection(237.3,248.0,1.5,{strongEvery:4,pairEvery:8});
-// Two deliberately rare peak combinations
-addSection(248.3,250.5,1,{strongEvery:2,pairEvery:2,pairShift:2});
-
+addSection(220.4,232.0,2,{strongEvery:4,pairEvery:10});
+addSection(232.3,244.0,1.5,{strongEvery:4,pairEvery:8});
 // 4:05–4:18 — final verse: deliberate cooldown
 addSection(245.0,258.0,3,{strongEvery:3});
-
 // 4:19–4:33 — build back toward chorus level
 addSection(259.0,273.2,1.5,{strongEvery:4,pairEvery:8});
-
 // 4:34–5:10 — chorus: regular chorus difficulty, not maximal density
 addSection(274.0,310.0,1,{strongEvery:4,pairEvery:5,pairShift:2});
-
 // 5:11–5:38 — ending: progressively fewer notes, finishing with singles
 addSection(311.0,321.0,2,{strongEvery:4,pairEvery:10});
 addSection(321.5,330.0,2.5,{strongEvery:3});
 addSection(330.5,337.0,3.5,{strongEvery:2});
-
-// Remove any accidental duplicate timestamps/lane pairs and keep chronological order.
 UNWRAPPED_CHART.sort((a,b)=>a.time-b.time);
