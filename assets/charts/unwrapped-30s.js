@@ -19,12 +19,13 @@ document.addEventListener('DOMContentLoaded',()=>{
   makeEdgeStyle();
   const showEdge=(src,side,id)=>{const old=document.getElementById(id);if(old)old.remove();const img=document.createElement('img');img.id=id;img.className='edgeReaction '+(side==='right'?'edgeRight':'edgeLeft');img.src=src;game.appendChild(img);setTimeout(()=>img.remove(),3700)};
   const comboEl=document.getElementById('comboNum'),points=document.getElementById('reactionPoints'),banner=document.getElementById('reactionBanner'),reaction=document.getElementById('reactionImage');
-  let lastCombo=-1,lastMiss=0,shown35=false,shown50=false;
+  let lastCombo=-1,lastMiss=0,shown35=false,shown50=false;shown70=false;
   const sync=()=>{
     const c=parseInt(comboEl&&comboEl.textContent||'0',10)||0;
-    if(c===0){shown35=false;shown50=false}
+    if(c===0){shown35=false;shown50=false;shown70=false}
     if(c>=35&&!shown35){shown35=true;showEdge('assets/effects/good-boy.png','left','edgeGoodBoy')}
     if(c>=50&&!shown50){shown50=true;showEdge('assets/effects/you-sweet-2.png','left','edgeSweet2');showEdge('assets/effects/you-sweet-1.png','right','edgeSweet1')}
+    if(c>=70&&!shown70){shown70=true;showEdge('assets/effects/you-sweet.png','left','edgeSweet')}
     if(c!==lastCombo){lastCombo=c}
     const p=(points&&points.textContent||'').trim();
     if(p==='+0'){lastMiss++;if(lastMiss>=10){showEdge('assets/effects/bad-boy.png','left','edgeBadBoy');lastMiss=0}}else if(p){lastMiss=0}
